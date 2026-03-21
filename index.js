@@ -1,78 +1,45 @@
 const mineflayer = require('mineflayer');
 const express = require('express');
-const SERVER_HOST = "Modcraft-gYuZ.aternos.me"
-const SERVER_PORT = 43889
-const VERSION = "1.21.1"
+
+// إعدادات السيرفر حقك
+const SERVER_HOST = "Modcraft-gYuZ.aternos.me";
+const SERVER_PORT = 43889;
+const VERSION = "1.21.1";
+
+// مصفوفة البوتات بأسماء جديدة تماماً
 const BOT_INFOS = [
-    { username: "Hashem_king", joinDelay: 0 },
-    { username: "Hashem_77", joinDelay: 60000 },
-]
-const RECONNECT_DELAY = 30000
-const ANTI_AFK_INTERVAL = 30000
+    { username: "Hashem_Super_1", joinDelay: 5000 },
+    { username: "Hashem_Super_2", joinDelay: 35000 },
+];
 
 function createBot({ username }) {
-    let bot = null;
-    let reconnectTimeout = null;
-    let afkInterval = null;
+    console.log(`📡 [${username}] جاري محاولة الدخول الآن...`);
+    
+    const bot = mineflayer.createBot({
+        host: SERVER_HOST,
+        port: SERVER_PORT,
+        username: username,
+        version: VERSION,
+    });
 
-    function startBot() {
-        bot = mineflayer.createBot({
-            host: SERVER_HOST,
-            port: SERVER_PORT,
-            username: username,
-            version: VERSION,
-        });
+    bot.on('spawn', () => {
+        console.log(`✅ كفووو! [${username}] دخل السيرفر بنجاح.`);
+        bot.chat("Hashem's Bot is here! 🛡️");
+    });
 
-        function onPlayerJoined(player) {
-            if (!player || !player.username || player.username === bot.username) return;
-            bot.chat(`Welcome to Mods Server, ${player.username}!`);
-        }
-
-        function antiAfk() {
-            if (bot && bot.entity) {
-                bot.swingArm();
-            }
-        }
-
-        function cleanUp() {
-            try {
-                if (bot) {
-                    bot.removeAllListeners();
-                    bot.quit();
-                }
-            } catch(e) {}
-
-            if (afkInterval) clearInterval(afkInterval);
-            afkInterval = null;
-        }
-
-        bot.on('playerJoined', onPlayerJoined);
-        bot.on('spawn', () => {
-            if (afkInterval) clearInterval(afkInterval);
-            afkInterval = setInterval(antiAfk, ANTI_AFK_INTERVAL);
-        });
-
-        const onDisconnect = (reason) => {
-            cleanUp();
-            if (reconnectTimeout) clearTimeout(reconnectTimeout);
-            reconnectTimeout = setTimeout(startBot, RECONNECT_DELAY);
-        };
-
-        bot.on('end', onDisconnect);
-        bot.on('kicked', onDisconnect);
-        bot.on('error', onDisconnect);
-    }
-
-    startBot();
+    bot.on('error', (err) => console.log(`❌ [${username}] خطأ: ${err.message}`));
+    
+    bot.on('end', () => {
+        console.log(`⚠️ [${username}] فصل.. بحاول أرجع بعد 30 ثانية`);
+        setTimeout(() => createBot({ username }), 30000);
+    });
 }
 
-BOT_INFOS.forEach((botInfo, idx) => {
-    setTimeout(() => createBot(botInfo), botInfo.joinDelay);
-});
-
+// تشغيل السيرفر عشان Render ما يطفي
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.get('/', (req, res) => res.status(200).send('OK'));
-app.listen(PORT, () => {
-    console.log(`Keep-alive server running on port ${PORT}`);
+app.get('/', (req, res) => res.send('<h1>BOTS ARE RUNNING! 🚀</h1>'));
+app.listen(process.env.PORT || 3000, () => {
+    console.log("🟢 Keep-alive server is Online!");
+    // تشغيل البوتات بعد ما يشتغل السيرفر
+    BOT_INFOS.forEach(info => setTimeout(() => createBot(info), info.joinDelay));
 });
