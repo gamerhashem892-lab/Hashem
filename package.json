@@ -1,0 +1,1 @@
+{ "name": "modcraft-bot-system", "version": "1.0.0", "description": "Stable multi-bot Minecraft system for Modcraft server on Render.com with anti-AFK, auto-reconnect, Express keep-alive, and memory safety.", "main": "index.js", "scripts": { "start": "node index.js" }, "dependencies": { "mineflayer": "^5.2.0", "express": "^4.18.0" }, "engines": { "node": ">=16.0.0" } }
