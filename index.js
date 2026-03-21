@@ -4,8 +4,8 @@ const SERVER_HOST = "Modcraft-gYuZ.aternos.me"
 const SERVER_PORT = 43889
 const VERSION = "1.21.1"
 const BOT_INFOS = [
-    { username: "hashem_bot1", joinDelay: 0 },
-    { username: "hashem_bot2", joinDelay: 60000 },
+    { username: "Hashem_king", joinDelay: 0 },
+    { username: "Hashem_77", joinDelay: 60000 },
 ]
 const RECONNECT_DELAY = 30000
 const ANTI_AFK_INTERVAL = 30000
