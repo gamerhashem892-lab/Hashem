@@ -1,24 +1,25 @@
 name: Minecraft Bot 24/7
 
 on:
+  workflow_dispatch: # يخليك تشغله يدوي
   schedule:
-    - cron: '*/20 * * * *'
-  workflow_dispatch:
+    - cron: '0 * * * *' # هذا هو المنبه: "كل رأس ساعة" (مثلاً 1:00، 2:00...)
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      
-      - name: Install dependencies
+          node-version: '20'
+
+      - name: Install Dependencies
         run: npm install
-      
-      - name: Run Minecraft Bot
+
+      - name: Run Bot
         run: node index.js
+        timeout-minutes: 350 # يخليه يشتغل أطول وقت ممكن (جيت هاب يطفيه بعد 6 ساعات كحد أقصى)
