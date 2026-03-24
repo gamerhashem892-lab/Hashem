@@ -1,13 +1,12 @@
 name: Minecraft Bot 24/7
 
 on:
-  workflow_dispatch: # تشغيل يدوي
+  workflow_dispatch:
   schedule:
-    - cron: '0 * * * *' # تشغيل تلقائي كل ساعة
+    - cron: '0 * * * *'
 
-# الحل لمنع تضارب البوتات
 concurrency:
-  group: minecraft-bot-group
+  group: bot-refresh-v1 # غيرنا الاسم هنا للتحديث
   cancel-in-progress: true
 
 jobs:
@@ -18,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4 # تم التصحيح هنا من uses إلى actions
+        uses: actions/setup-node@v4 # تأكد إنها كذا
         with:
           node-version: '20'
 
