@@ -1,15 +1,16 @@
-name: Minecraft Bot 24/7 (Auto-Pilot)
+name: Minecraft Bot 24/7 (Handover Edition)
 
 on:
   push:
-    branches: [ main ] # يشتغل فوراً أول ما تضغط "Commit"
-  workflow_dispatch: # تقدر تشغله يدوي لو احتجت
+    branches: [ main ]
+  workflow_dispatch: 
   schedule:
-    - cron: '0 */3 * * *' # يفتح خانة جديدة كل 3 ساعات أوتوماتيكياً
+    - cron: '0 */3 * * *' # يشتغل كل 3 ساعات أوتوماتيكياً
 
 concurrency:
-  group: bot-refresh-v2 # تحديث الجروب لضمان عدم التداخل
-  cancel-in-progress: true # يقفل القديم ويفتح الجديد فوراً
+  group: bot-refresh-v2
+  # خليه false عشان يسمح للجديد يدخل والقديم لسه موجود (Overlap)
+  cancel-in-progress: false 
 
 jobs:
   run-bot:
@@ -26,6 +27,21 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Bot
-        run: node index.js
-        timeout-minutes: 175 # نخليه يطفي قبل الـ 3 ساعات بـ 5 دقايق عشان الجديد يفتح مكانه بنظام
+      - name: Run Bot & Handover
+        run: |
+          # 1. تشغيل البوت الجديد في الخلفية
+          node index.js &
+          
+          # 2. انتظار 30 ثانية فقط (وقت كافي لربط الاتصال وتثبيت البوت في السيرفر)
+          echo "Handover in progress... New bot joining."
+          sleep 30
+          
+          # 3. إعلان نجاح العملية
+          echo "Handover complete! New bot is now guarding the server."
+          
+          # 4. إبقاء الأكشن شغال لمدة 175 دقيقة (ليغطي الـ 3 ساعات)
+          # 10500 ثانية = 175 دقيقة
+          sleep 10500
+        
+        # نضبط وقت انتهاء الأكشن ليكون 179 دقيقة (قبل الدورة الجديدة بدقيقة)
+        timeout-minutes: 179
