@@ -34,7 +34,7 @@ jobs:
           
           # 2. انتظار 30 ثانية فقط (وقت كافي لربط الاتصال وتثبيت البوت في السيرفر)
           echo "Handover in progress... New bot joining."
-          sleep 15
+          sleep 16
           
           # 3. إعلان نجاح العملية
           echo "Handover complete! New bot is now guarding the server."
