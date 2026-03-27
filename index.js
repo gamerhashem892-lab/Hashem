@@ -2,8 +2,8 @@ const mineflayer = require('mineflayer');
 const express = require('express');
 
 // إعدادات السيرفر
-const SERVER_HOST = "Modcraft-gYuZ.aternos.me";
-const SERVER_PORT = 43889;
+const SERVER_HOST = "Hshm.aternos.me";
+const SERVER_PORT = 16821;
 const VERSION = "1.21.1";
 
 const BOT_INFOS = [
