@@ -7,8 +7,8 @@ const SERVER_PORT = 16821;
 const VERSION = "1.21.1";
 
 const BOT_INFOS = [
-    { username: "Hashem_Super_1", joinDelay: 5000 },
-    { username: "Hashem_Super_2", joinDelay: 15000 }, // قللت الوقت شوي عشان يدخلون أسرع
+    { username: "Hashem_Super1", joinDelay: 5000 },
+    { username: "Hashem_Super2", joinDelay: 15000 }, // قللت الوقت شوي عشان يدخلون أسرع
 ];
 
 function createBot(info) {
